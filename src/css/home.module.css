@@ -1,0 +1,24 @@
+
+
+.main{
+    width: 70%;
+    height: 100vh;
+    margin: 0 auto;
+    background-color: var(--light-background);
+    box-sizing: border-box;
+    padding-left: 60px;
+    padding-top: 30px;
+}
+
+.main p{
+    color: white;
+    font-size: 30px;
+}
+
+.all{
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(4, 300px);
+    row-gap: 20px;
+    justify-content: center;
+}
