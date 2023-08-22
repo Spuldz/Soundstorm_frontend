@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { createContext, useContext, useEffect, useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
@@ -10,11 +10,23 @@ import appData from './appData.json'
 import { Home } from './pages/Home'
 import { useCookies } from 'react-cookie'
 import { Upload } from './pages/Upload'
+import { AudioBar } from './components/AudioBar'
+import { ISong } from './types/Song'
+
+export const audioContext = createContext<any>({})
 
 function App() {
 
   const [cookies, setCookies, removeCookies] = useCookies()
   const navigate = useNavigate()
+
+  const [audioData, setAudioData] = useState<ISong>()
+
+  const updateAudioData = (newAudio:any) => {
+    setAudioData(newAudio)
+  }
+
+  
 
   async function getAccessToken(){
 
@@ -61,12 +73,17 @@ function App() {
   }, [])
 
   return (
-    <Routes>
-      <Route path='/register' element={<Register/>}/>
-      <Route path='/login' element={<Login/>}/>
-      <Route path='/discover' element={<Home/>}/>
-      <Route path='/upload' element={<Upload/>}/>
-    </Routes>
+    <audioContext.Provider value={[audioData, setAudioData]}>
+      <div>
+      <Routes>
+        <Route path='/register' element={<Register/>}/>
+        <Route path='/login' element={<Login/>}/>
+        <Route path='/discover' element={<Home/>}/>
+        <Route path='/upload' element={<Upload/>}/>
+      </Routes>
+      <AudioBar/>
+    </div>
+    </audioContext.Provider>
   )
 }
 

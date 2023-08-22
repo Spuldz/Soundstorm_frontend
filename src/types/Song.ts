@@ -1,9 +1,9 @@
 
 export type ISong = {
-    name: string,
-    desc: string,
+    name?: string,
+    desc?: string,
     fileName?: string,
-    public: boolean
+    public?: boolean
     owner?: string
     tags?:  string[],
     thumbnail?: string,

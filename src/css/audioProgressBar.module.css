@@ -1,0 +1,7 @@
+
+.main{
+    width: 600px;
+    cursor: pointer;
+    height: 1px;
+    accent-color: var(--purple);
+}

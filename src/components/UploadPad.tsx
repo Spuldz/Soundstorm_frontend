@@ -28,6 +28,8 @@ export const UploadPad = (props: {onSelect:Function}) => {
         const infoData = {...info}
         infoData.public = isPublic
 
+        console.log(infoData)
+
         form.append("audio", audioFile)
         form.append("info", JSON.stringify(infoData))
         form.append("thumbnail", thumbnailFile == null ? null : thumbnailFile)

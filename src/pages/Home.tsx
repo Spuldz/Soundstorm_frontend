@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import appData from '../appData.json'
 import axios from 'axios'
 import { useCookies } from 'react-cookie'
@@ -14,6 +14,8 @@ export const Home = () => {
     const [songs, setSongs] = useState<ISong[]>()
     const [playing, setPlaying] = useState(false)
     const [playingAudio, setPlayingAudio] = useState<any>()
+
+    
 
     async function getUser(){
         const accessToken = cookies.accessToken
@@ -51,32 +53,7 @@ export const Home = () => {
 
     }, [])
 
-    const handleInteraction = (audio:any) => {
 
-        if(playingAudio === audio){
-           if(playing){
-            audio.pause()
-            setPlaying(false)
-            return
-           }else{
-            audio.play()
-            setPlaying(true)
-            return
-           }
-        }
-
-        if(typeof playingAudio !== 'undefined' && playing){
-            playingAudio.pause()
-            setPlayingAudio(audio)
-            audio.currentTime = 0
-            audio.play()
-        }else{
-            audio.currentTime = 0
-            audio.play()
-            setPlaying(true)
-            setPlayingAudio(audio)
-        }
-    }
 
     return(
         <div>   
@@ -88,9 +65,7 @@ export const Home = () => {
                         <p>Loading...</p>
                     ) : (
                         songs.map((song:ISong, i:number) => (
-                            <Song data={song} key={i} handleInteraction={(audio:any) => {
-                                handleInteraction(audio)
-                            }}/>
+                            <Song data={song} key={i} />
                         ))
                     )}
                 </div>

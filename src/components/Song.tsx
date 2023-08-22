@@ -1,48 +1,17 @@
-import { ISong } from "../types/Song";
 import styles from '../css/song.module.css'
-import { useEffect, useState } from "react";
-import appData from '../appData.json'
-import axios from "axios";
-import { useCookies } from "react-cookie";
+import { useContext, useEffect, useState } from "react";
+import { audioContext } from "../App";
 
-export const Song = (props: {data?:ISong, handleInteraction:Function}) => {
+export const Song = (props: {data:any}) => {
 
-    const [cookies, setCookies, removeCookies] = useCookies()
-    const [audio, setAudio] = useState<any>()
-    const [playing, setPlaying] = useState<boolean>()
+    const [audioData, setAudioData] = useContext(audioContext)
 
-  
-
-    function getSong(){
-        
-        return new Promise((resolve, reject) => {
-            axios.get(`${appData.apiUrl}/song/getAudio/${props.data?.fileName}`, {
-                responseType: 'blob',
-                headers:{
-                    "Authorization": `Bearer ${cookies.accessToken}`
-                }
-            })
-            .then(res => {
-                const audioURL = URL.createObjectURL(res.data)
-                resolve(new Audio(audioURL))
-            }).catch(
-                err => {
-                    reject(err)
-                }
-            )
-        })
-    }
 
 
     return(
-        <div className={styles.main} onClick={async () => {
-            if(typeof audio === "undefined"){
-                const song = await getSong()
-                setAudio(song)
-                props.handleInteraction(song)
-            }else{
-                props.handleInteraction(audio)
-            }
+        <div className={styles.main} onClick={ () => {
+            const data = {...props.data}
+            setAudioData(data)
         }}>
             <div className={styles.img} style={{backgroundImage: `URL(${props.data?.thumbnail})`}}></div>
             <div className={styles.data}>
