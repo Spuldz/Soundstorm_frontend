@@ -52,7 +52,9 @@ export const UploadPadInfo = (props: {onUpload:Function}) => {
                 onMouseLeave={() => setThumbnailHover(false)}
                 onClick={() => fileRef.current.click()}>
                     {thumbnailHover ? <span className={styles.p1}>Upload Image</span> : null}
-                    <input type='file' style={{display: 'none'}} ref={fileRef} onChange={() => setThumbnail(fileRef.current.files[0])}/>
+                    <input type='file' style={{display: 'none'}} ref={fileRef} onChange={(e) => {
+                        e.target.files?.length as number > 0 ? setThumbnail(fileRef.current.files[0]) : null
+                    }}/>
                 </div>
             </div>
             <div className={styles.right}>

@@ -6,7 +6,7 @@ import appData from '../appData.json'
 import { useCookies } from 'react-cookie'
 import { UploadPadInfo } from './UploadPadInfo'
 
-export const UploadPad = (props: {onSelect:Function}) => {
+export const UploadPad = () => {
 
     const [isPublic, setPublic] = useState<boolean>(false)
     const [file, setFile] = useState<any>()
@@ -21,30 +21,28 @@ export const UploadPad = (props: {onSelect:Function}) => {
 
     
 
-    const uploadSong = (audioFile:any,info:ISong, thumbnailFile:any) => {
+    const uploadSong = (audioFile:any, info:any, thumbnailFile:any) => {
+        const form = new FormData();
 
-        const form = new FormData()
-
-        const infoData = {...info}
-        infoData.public = isPublic
-
-        console.log(infoData)
-
-        form.append("audio", audioFile)
-        form.append("info", JSON.stringify(infoData))
-        form.append("thumbnail", thumbnailFile == null ? null : thumbnailFile)
-
+        const data = {...info}
+        data.public = isPublic
+    
+        form.append("audio", audioFile);
+        form.append("info", JSON.stringify(data));
+        form.append("thumbnail", thumbnailFile);
+    
         axios.post(`${appData.apiUrl}/song`, form, {
-            headers:{
+            headers: {
                 "Authorization": `Bearer ${cookies.accessToken}`
             }
         }).then(
             res => {
-                console.log(res.data.song)
+                console.log(res.data.song);
             }
-        )
-
-    }
+        ).catch(error => {
+            console.error("Upload error:", error);
+        });
+    };
 
 
     return(
