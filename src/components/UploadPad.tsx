@@ -1,10 +1,12 @@
-import { useEffect, useRef, useState } from 'react'
+import { useContext, useEffect, useRef, useState } from 'react'
 import styles from '../css/uploadPad.module.css'
 import { ISong } from '../types/Song'
 import axios from 'axios'
 import appData from '../appData.json'
 import { useCookies } from 'react-cookie'
 import { UploadPadInfo } from './UploadPadInfo'
+import { useNavigate } from 'react-router-dom'
+import { songsContext } from '../App'
 
 export const UploadPad = () => {
 
@@ -14,6 +16,9 @@ export const UploadPad = () => {
     const [info, setInfo] = useState({})
     const fileRef = useRef<any>()
     const thumbnailRef = useRef<any>()
+    const [songs, setSongs] = useContext(songsContext)
+
+    const nav = useNavigate()
 
     const selectFile = () => {
         fileRef.current.click()
@@ -37,7 +42,8 @@ export const UploadPad = () => {
             }
         }).then(
             res => {
-                console.log(res.data.song);
+                setSongs((prev:any) => [...prev, res.data.song])
+                nav("/discover")
             }
         ).catch(error => {
             console.error("Upload error:", error);

@@ -5,15 +5,26 @@ import { audioContext } from "../App";
 export const Song = (props: {data:any}) => {
 
     const [audioData, setAudioData] = useContext(audioContext)
+    const [hovering, setHovering] = useState(false)
 
+    const darkBackground = `linear-gradient(rgba(0, 0, 0, 0.5),
+    rgba(0, 0, 0, 0.5)),URL(${props.data?.thumbnail})`
 
+    const lightBackground = `URL(${props.data?.thumbnail})`
 
     return(
-        <div className={styles.main} onClick={ () => {
-            const data = {...props.data}
-            setAudioData(data)
-        }}>
-            <div className={styles.img} style={{backgroundImage: `URL(${props.data?.thumbnail})`}}></div>
+        <div
+          className={styles.main}
+          onMouseEnter={() => setHovering(true)}
+          onMouseLeave={() => setHovering(false)}
+          >
+            <div className={styles.img} style={{backgroundImage: hovering ? darkBackground : lightBackground}}>
+                {hovering ? <div className={styles.play}
+                onClick={ () => {
+                    const data = {...props.data}
+                    setAudioData(data)
+                }}></div> : null}
+            </div>
             <div className={styles.data}>
                 <span className={styles.artist}>{props.data?.ownerName}</span>
                 <br/>

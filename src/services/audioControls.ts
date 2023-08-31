@@ -1,13 +1,14 @@
 import axios from "axios"
 import appData from '../appData.json'
 import { useCookies } from "react-cookie"
+import { ISong } from "../types/Song"
 
-export const audioPause = (audio:any, onPause:any) => {
+export const audioPause = (audio:any, onPause:Function ) => {
     audio.pause()
     onPause()
 }
 
-export const audioPlay = (audio:any, onPlay:any) => {
+export const audioPlay = (audio:any, onPlay:Function) => {
     audio.play()
     onPlay()
 }
@@ -31,4 +32,28 @@ export function getSong(onGet:Function, audioData:any, cookies:any){
             }
         )
     })
+}
+
+export function getNextSong(songs:ISong[], currentSongId:string){
+    const currentSong = songs.filter(s => s._id === currentSongId) as any
+    const index:number = songs.indexOf(currentSong[0])
+    let nextSong = songs[index + 1]
+
+    if(!nextSong){
+        nextSong = songs[0]
+    }
+
+    return nextSong
+}
+
+export function getPrevSong(songs:ISong[], currentSongId:string){
+    const currentSong = songs.filter(s => s._id === currentSongId) as any
+    const index:number = songs.indexOf(currentSong[0])
+    let nextSong = songs[index - 1]
+
+    if(!nextSong){
+        nextSong = songs[songs.length - 1]
+    }
+
+    return nextSong
 }

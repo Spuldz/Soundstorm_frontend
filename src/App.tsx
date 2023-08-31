@@ -14,6 +14,7 @@ import { AudioBar } from './components/AudioBar'
 import { ISong } from './types/Song'
 
 export const audioContext = createContext<any>({})
+export const songsContext = createContext<any>([])
 
 function App() {
 
@@ -21,12 +22,7 @@ function App() {
   const navigate = useNavigate()
 
   const [audioData, setAudioData] = useState<ISong>()
-
-  const updateAudioData = (newAudio:any) => {
-    setAudioData(newAudio)
-  }
-
-  
+  const [songs, setSongs] = useState<ISong[]>([])
 
   async function getAccessToken(){
 
@@ -73,17 +69,19 @@ function App() {
   }, [])
 
   return (
-    <audioContext.Provider value={[audioData, setAudioData]}>
-      <div>
-      <Routes>
-        <Route path='/register' element={<Register/>}/>
-        <Route path='/login' element={<Login/>}/>
-        <Route path='/discover' element={<Home/>}/>
-        <Route path='/upload' element={<Upload/>}/>
-      </Routes>
-      <AudioBar/>
-    </div>
-    </audioContext.Provider>
+    <songsContext.Provider value={[songs, setSongs]}>
+      <audioContext.Provider value={[audioData, setAudioData]}>
+        <div>
+        <Routes>
+          <Route path='/register' element={<Register/>}/>
+          <Route path='/login' element={<Login/>}/>
+          <Route path='/discover' element={<Home/>}/>
+          <Route path='/upload' element={<Upload/>}/>
+        </Routes>
+        <AudioBar/>
+      </div>
+      </audioContext.Provider>
+    </songsContext.Provider>
   )
 }
 

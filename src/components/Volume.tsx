@@ -18,7 +18,7 @@ export const Volume = (props: {onChange?:Function}) => {
                  className={styles.input}
                  min={0}
                  max={100}
-                 defaultValue={50}
+                 defaultValue={20}
                  onChange={() => props.onChange ? props.onChange(volumeRef.current.value / 100) : null}
                  ref={volumeRef}
                  disabled={!hovering}/>
