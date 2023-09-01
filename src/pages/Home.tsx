@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useContext, useEffect, useMemo, useRef, useState } from 'react'
 import appData from '../appData.json'
 import axios from 'axios'
 import { useCookies } from 'react-cookie'
@@ -6,12 +6,13 @@ import { Header } from '../components/Header'
 import styles from '../css/home.module.css'
 import { Song } from '../components/Song'
 import { ISong } from '../types/Song'
+import { songsContext } from '../App'
 
 export const Home = () => {
 
     const [user, setUser] = useState()
     const [cookies, setCookies, removeCookies] = useCookies()
-    const [songs, setSongs] = useState<ISong[]>()
+    const [songs, setSongs] = useContext<any[]>(songsContext)
     const [playing, setPlaying] = useState(false)
     const [playingAudio, setPlayingAudio] = useState<any>()
 
@@ -37,13 +38,14 @@ export const Home = () => {
 
         inner()
 
-        if(typeof songs === 'undefined'){
-            axios.get(`${appData.apiUrl}/song`, {
+        if(songs.length === 0){
+            axios.get(`${appData.apiUrl}/song/public`, {
                 headers:{
                     "Authorization": `Bearer ${accessToken}`
                 }
             })
             .then(res => {
+                console.log("hey")
                 setSongs(res.data.songs)
                 console.log(res.data)
             })
@@ -61,7 +63,7 @@ export const Home = () => {
             <div className={styles.main}>
                 <p>All Songs</p>
                 <div className={styles.all}>
-                    {typeof songs === 'undefined' ? (
+                    {songs.length === 0 ? (
                         <p>Loading...</p>
                     ) : (
                         songs.map((song:ISong, i:number) => (

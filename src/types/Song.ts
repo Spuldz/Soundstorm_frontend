@@ -1,5 +1,6 @@
 
 export type ISong = {
+    _id: string,
     name?: string,
     desc?: string,
     fileName?: string,

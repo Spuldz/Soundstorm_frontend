@@ -1,12 +1,14 @@
-import { useEffect, useRef, useState } from 'react'
+import { useContext, useEffect, useRef, useState } from 'react'
 import styles from '../css/uploadPad.module.css'
 import { ISong } from '../types/Song'
 import axios from 'axios'
 import appData from '../appData.json'
 import { useCookies } from 'react-cookie'
 import { UploadPadInfo } from './UploadPadInfo'
+import { useNavigate } from 'react-router-dom'
+import { songsContext } from '../App'
 
-export const UploadPad = (props: {onSelect:Function}) => {
+export const UploadPad = () => {
 
     const [isPublic, setPublic] = useState<boolean>(false)
     const [file, setFile] = useState<any>()
@@ -14,6 +16,9 @@ export const UploadPad = (props: {onSelect:Function}) => {
     const [info, setInfo] = useState({})
     const fileRef = useRef<any>()
     const thumbnailRef = useRef<any>()
+    const [songs, setSongs] = useContext(songsContext)
+
+    const nav = useNavigate()
 
     const selectFile = () => {
         fileRef.current.click()
@@ -21,30 +26,29 @@ export const UploadPad = (props: {onSelect:Function}) => {
 
     
 
-    const uploadSong = (audioFile:any,info:ISong, thumbnailFile:any) => {
+    const uploadSong = (audioFile:any, info:any, thumbnailFile:any) => {
+        const form = new FormData();
 
-        const form = new FormData()
-
-        const infoData = {...info}
-        infoData.public = isPublic
-
-        console.log(infoData)
-
-        form.append("audio", audioFile)
-        form.append("info", JSON.stringify(infoData))
-        form.append("thumbnail", thumbnailFile == null ? null : thumbnailFile)
-
+        const data = {...info}
+        data.public = isPublic
+    
+        form.append("audio", audioFile);
+        form.append("info", JSON.stringify(data));
+        form.append("thumbnail", thumbnailFile);
+    
         axios.post(`${appData.apiUrl}/song`, form, {
-            headers:{
+            headers: {
                 "Authorization": `Bearer ${cookies.accessToken}`
             }
         }).then(
             res => {
-                console.log(res.data.song)
+                setSongs((prev:any) => [...prev, res.data.song])
+                nav("/discover")
             }
-        )
-
-    }
+        ).catch(error => {
+            console.error("Upload error:", error);
+        });
+    };
 
 
     return(

@@ -13,7 +13,6 @@ export const AudioProgressBar = (props: {onChange:Function, duration:number}) =>
          min={0}
          max={100}
          className={styles.main} 
-         defaultValue={0} 
          value={props.duration} 
          onChange={() => props.onChange(audioRef.current.value)} 
          ref={audioRef}/>
