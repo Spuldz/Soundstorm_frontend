@@ -20,7 +20,7 @@ export const AudioBar = () => {
     const [playingAudioData, setPlayingAudioData] = useState<any>(null)
     const [playingAudio, setPlayingAudio] = useState<HTMLAudioElement>(new Audio())
     const [cookies, setCookies] = useCookies()
-    const [active, setActive] = useState<boolean>(true)
+    const [active, setActive] = useState<boolean>(false)
     const [progress, setProgress] = useState(0)
 
 
