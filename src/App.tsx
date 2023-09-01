@@ -12,6 +12,7 @@ import { useCookies } from 'react-cookie'
 import { Upload } from './pages/Upload'
 import { AudioBar } from './components/AudioBar'
 import { ISong } from './types/Song'
+import { SongPage } from './pages/SongPage'
 
 export const audioContext = createContext<any>({})
 export const songsContext = createContext<any>([])
@@ -77,6 +78,7 @@ function App() {
           <Route path='/login' element={<Login/>}/>
           <Route path='/discover' element={<Home/>}/>
           <Route path='/upload' element={<Upload/>}/>
+          <Route path='/song/:id' element={<SongPage/>}/>
         </Routes>
         <AudioBar/>
       </div>
