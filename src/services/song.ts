@@ -11,3 +11,13 @@ export const getSong = async (id:string, accessToken:string) => {
     })
     return res.data.song
 }
+
+export const searchSongs = async (query:string, accessToken:string) => {
+    const res = await axios.get(`${appData.apiUrl}/song/search/${query}`, {
+        headers:{
+            Authorization: `Bearer ${accessToken}`
+        }
+    })
+
+    return res.data.songs
+}

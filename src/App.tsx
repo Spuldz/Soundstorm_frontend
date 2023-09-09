@@ -16,6 +16,7 @@ import { SongPage } from './pages/SongPage'
 
 export const audioContext = createContext<any>({})
 export const songsContext = createContext<any>([])
+export const playingContext = createContext<any>(false)
 
 function App() {
 
@@ -24,6 +25,7 @@ function App() {
 
   const [audioData, setAudioData] = useState<ISong>()
   const [songs, setSongs] = useState<ISong[]>([])
+  const [playing, setPlaying] = useState()
 
   async function getAccessToken(){
 
@@ -70,6 +72,7 @@ function App() {
   }, [])
 
   return (
+  <playingContext.Provider value={[playing, setPlaying]}>
     <songsContext.Provider value={[songs, setSongs]}>
       <audioContext.Provider value={[audioData, setAudioData]}>
         <div>
@@ -84,6 +87,8 @@ function App() {
       </div>
       </audioContext.Provider>
     </songsContext.Provider>
+  </playingContext.Provider>
+
   )
 }
 

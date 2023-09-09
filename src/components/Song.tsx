@@ -1,12 +1,15 @@
 import styles from '../css/song.module.css'
 import { useContext, useEffect, useState } from "react";
-import { audioContext } from "../App";
+import { audioContext, playingContext } from "../App";
 import { useNavigate } from 'react-router-dom';
+import play from '../assets/play.png'
+import pause from '../assets/pause.png'
 
 export const Song = (props: {data:any}) => {
 
     const [audioData, setAudioData] = useContext(audioContext)
     const [hovering, setHovering] = useState(false)
+    const [playing, setPlaying] = useContext(playingContext)
 
     const nav = useNavigate()
 
@@ -26,6 +29,9 @@ export const Song = (props: {data:any}) => {
              className={styles.img}
              style={{backgroundImage: hovering ? darkBackground : lightBackground}}>
                 {hovering ? <div className={styles.play}
+                style={{
+                    backgroundImage: `URL(${playing && props.data._id === audioData._id ? pause : play})`
+                }}
                 onClick={ () => {
                     const data = {...props.data}
                     setAudioData(data)

@@ -64,3 +64,11 @@
     mix-blend-mode: multiply;
     
 }
+
+.searchWrapper{
+    width: 500px;
+    background-color: var(--background);
+    position: absolute;
+    z-index: 2;
+    margin-top: 12px;
+}

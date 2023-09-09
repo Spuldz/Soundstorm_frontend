@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from 'react'
 import styles from '../css/audioBar.module.css'
-import { audioContext } from '../App'
+import { audioContext, playingContext } from '../App'
 import { useCookies } from 'react-cookie'
 import prev from '../assets/audio_controls/icons8-previous-30.svg'
 import play from '../assets/audio_controls/icons8-play-button-30_2.svg'
@@ -14,7 +14,7 @@ import { songsContext } from '../App'
 
 export const AudioBar = () => {
 
-    const [playing, setPlaying] = useState(false)
+    const [playing, setPlaying] = useContext(playingContext)
     const [audioData, setAudioData] = useContext(audioContext)
     const [playingAudioData, setPlayingAudioData] = useState<any>(null)
     const [playingAudio, setPlayingAudio] = useState<HTMLAudioElement>(new Audio())
